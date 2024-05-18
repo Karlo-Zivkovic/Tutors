@@ -1,0 +1,25 @@
+# Cargo package manager artifacts
+/target
+**/*.rs.bk
+
+# Compilation files
+*.rlib
+
+# Ignore generated files by build scripts
+/build/
+
+# IDE specific files
+/.idea
+/.vscode
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Node modules for projects involving JavaScript/TypeScript
+/node_modules/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
