@@ -20,7 +20,6 @@ pub async fn get_course_details_db(
     tutor_id: i32,
     course_id: i32,
 ) -> Result<Course, EzyTutorError> {
-    // Prepare SQL statement
     let course_row = sqlx::query_as!(
         Course,
         "SELECT * FROM ezy_course_c6 where tutor_id = $1 and course_id = $2",
@@ -69,7 +68,6 @@ pub async fn delete_course_db(
     tutor_id: i32,
     course_id: i32,
 ) -> Result<String, EzyTutorError> {
-    // Prepare SQL statement
     let course_row = sqlx::query!(
         "DELETE FROM ezy_course_c6 where tutor_id = $1 and course_id = $2",
         tutor_id,
@@ -85,7 +83,6 @@ pub async fn update_course_details_db(
     course_id: i32,
     update_course: UpdateCourse,
 ) -> Result<Course, EzyTutorError> {
-    // Retrieve current record
     let current_course_row = sqlx::query_as!(
         Course,
         "SELECT * FROM ezy_course_c6 where tutor_id = $1 and course_id = $2",

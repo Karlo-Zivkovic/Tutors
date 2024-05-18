@@ -3,14 +3,13 @@ use crate::models::tutor::{NewTutor, Tutor, UpdateTutor};
 use sqlx::postgres::PgPool;
 
 pub async fn get_all_tutors_db(pool: &PgPool) -> Result<Vec<Tutor>, EzyTutorError> {
-    // Prepare SQL statement
     let tutor_rows = sqlx::query!(
         "SELECT tutor_id, tutor_name, tutor_pic_url,
 tutor_profile FROM ezy_tutor_c6"
     )
     .fetch_all(pool)
     .await?;
-    // Extract result
+
     let tutors: Vec<Tutor> = tutor_rows
         .iter()
         .map(|tutor_row| Tutor {
@@ -26,7 +25,6 @@ tutor_profile FROM ezy_tutor_c6"
     }
 }
 pub async fn get_tutor_details_db(pool: &PgPool, tutor_id: i32) -> Result<Tutor, EzyTutorError> {
-    // Prepare SQL statement
     let tutor_row = sqlx::query!(
         "SELECT tutor_id, tutor_name, tutor_pic_url,
 tutor_profile FROM ezy_tutor_c6 where tutor_id = $1",
@@ -54,7 +52,6 @@ returning tutor_id, tutor_name, tutor_pic_url, tutor_profile",
     )
     .fetch_one(pool)
     .await?;
-    //Retrieve result
     Ok(Tutor {
         tutor_id: tutor_row.tutor_id,
         tutor_name: tutor_row.tutor_name,
@@ -67,7 +64,6 @@ pub async fn update_tutor_details_db(
     tutor_id: i32,
     change_tutor: UpdateTutor,
 ) -> Result<Tutor, EzyTutorError> {
-    // Retrieve current tutor record:
     let tutor_row = sqlx::query!(
     "SELECT tutor_id, tutor_name, tutor_pic_url, tutor_profile FROM ezy_tutor_c6 where tutor_id = $1",
     tutor_id
@@ -95,7 +91,6 @@ pub async fn update_tutor_details_db(
         },
     };
 
-    // Prepare SQL statement
     let tutor_updated_row = sqlx::query!(
         "UPDATE ezy_tutor_c6 SET tutor_name = $1, tutor_pic_url=$2, tutor_profile=$3 where tutor_id = $4 returning tutor_id, tutor_name, tutor_pic_url, tutor_profile", 
         new_tutor_record.tutor_name, new_tutor_record.tutor_pic_url, new_tutor_record.tutor_profile, tutor_id
@@ -113,7 +108,6 @@ pub async fn update_tutor_details_db(
     Ok(tutor_updated_row)
 }
 pub async fn delete_tutor_db(pool: &PgPool, tutor_id: i32) -> Result<String, EzyTutorError> {
-    // Prepare SQL statement
     let tutor_row = sqlx::query(&format!(
         "DELETE FROM ezy_tutor_c6 where tutor_id = {}",
         tutor_id
